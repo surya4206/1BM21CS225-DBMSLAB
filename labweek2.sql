@@ -31,10 +31,24 @@ foreign key(b_name) references branch(b_name) on delete cascade);
 
 insert into branch values('SBI_Chamrajpet','Bangalore',50000),('SBI_ResidencyRoad','Bangalore',10000),('SBI_ShivajiRoad','Bombay',20000),('SBI_ParliamentRoad','Delhi',10000),('SBI_JantarMantar','Delhi',20000);
 
-insert into BankAccount values(1,'SBI_Chamrajpet',2000),(2,'SBI_ResidencyRoad',5000),(3,'SBI_ShivajiRoad',6000),(4,'SBI_ParliamentRoad',9000),(5,'SBI_JantarMantar',8000);
+insert into BankAccount values(1,'SBI_ResidencyRoad',2000),(2,'SBI_ResidencyRoad',5000),(3,'SBI_ShivajiRoad',6000),(4,'SBI_ParliamentRoad',9000),(5,'SBI_JantarMantar',8000);
 
 insert into BankCustomer values('Avinash','Bull_Temple_Road','Bangalore'),('Dinesh','Bannergatta_Road','Bangalore'),('Mohan','NationalCollege_Road','Bangalore'),('Nikil','Akbar_Road','Delhi'),('Ravi','Prithviraj_Road','Delhi');
 
-insert into depositor values('Avinash',1),('Dinesh',2),('Mohan',3),('Nikil',4),('Ravi',5);
+insert into depositor values('Avinash',1),('Avinash',2),('Mohan',3),('Nikil',4),('Ravi',5);
 
-insert into loan values(1,'SBI_Chamrajpet',1000),(2,'SBI_ResidencyRoad',2000),(3,'SBI_ShivajiRoad',3000),(4,'SBI_ParliamentRoad',4000),(5,'SBI_JantarMantar',5000);
+insert into loan values(1,'SBI_ResidencyRoad',1000),(2,'SBI_ResidencyRoad',2000),(3,'SBI_ShivajiRoad',3000),(4,'SBI_ParliamentRoad',4000),(5,'SBI_JantarMantar',5000);
+
+select c_name,count(*),b_name
+from depositor d inner join BankAccount b on d.accno=b.accno
+group by c_name,b_name
+having count(*)>=2;
+
+create view loan_sum 
+as
+select b_name,sum(amt)
+from loan
+group by b_name;
+select * from loan_sum;
+
+select b_name,b_city,assets/100000 as assets_in_lakhs from branch;
