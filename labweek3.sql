@@ -19,6 +19,7 @@ sal real,
 dept_no int,
 primary key(empno),
 foreign key(dept_no) references dept(dept_no) on delete cascade on update cascade);
+SET FOREIGN_KEY_CHECKS=0;
 
 create table assigned_to(empno int,
 pno int,
@@ -26,6 +27,7 @@ job_role varchar(15),
 primary key(empno,pno),
 foreign key(pno) references project(pno) on delete cascade on update cascade,
 foreign key(empno) references employee(empno) on delete cascade on update cascade);
+
 
 create table incentives(empno int,
 incentive_date date,
@@ -47,3 +49,15 @@ select * from dept;
 
 insert into incentives values(01,'1999-01-01',2000),(02,'2000-02-01',3000),(03,'2001-03-01',4000),(04,'2002-04-01',5000),(05,'2003-05-01',6000),(04,'2004-06-01',7000);
 select * from incentives;
+
+select ato.empno
+from assigned_to ato,project p
+where p.pno=ato.pno and p.ploc in ('Bengaluru','Mysuru','Hyderabad');
+
+select empno
+from employee
+where empno not in (select empno from incentives);
+
+select e.ename,e.empno,d.dept_no,ato.job_role,d.dloc,p.ploc
+from employee e,dept d,project p,assigned_to ato
+where ato.empno=e.empno and ato.pno=p.pno and d.dept_no=e.dept_no and d.dloc=p.ploc;
