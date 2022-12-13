@@ -62,13 +62,13 @@ select e.ename,e.empno,d.dept_no,ato.job_role,d.dloc,p.ploc
 from employee e,dept d,project p,assigned_to ato
 where ato.empno=e.empno and ato.pno=p.pno and d.dept_no=e.dept_no and d.dloc=p.ploc;
 
-select e.ename
-from employee e
-where e.ename in (select e2.mgr_no,count(e2.mgr_no) from employee e2 group by mgr_no);
+select max(total),e1.ename
+from (select count(e.empno) as total,e.mgr_no from employee e group by mgr_no) as result,employee e1
+where e1.empno=result.mgr_no;
 
-select e.ename
-from employee e
-where e.deptno=(select mgr_no,dept_no from employee group by mgr_no);
+select e1.ename,e1.empno
+from employee e1
+where sal>all(select avg(e2.sal) from employee e2 group by mgr_no);
 
 select i.empno,max(i.incentive_amt)
 from incentives i,employee e
