@@ -61,3 +61,7 @@ where empno not in (select empno from incentives);
 select e.ename,e.empno,d.dept_no,ato.job_role,d.dloc,p.ploc
 from employee e,dept d,project p,assigned_to ato
 where ato.empno=e.empno and ato.pno=p.pno and d.dept_no=e.dept_no and d.dloc=p.ploc;
+
+select i.empno,max(i.incentive_amt)
+from incentives i,employee e
+where incentive_amt!=(select max(incentive_amt) from incentives);
