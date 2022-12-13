@@ -41,7 +41,7 @@ select * from project;
 insert into assigned_to values(01,01,'Accountant'),(02,02,'MLDev'),(03,03,'JavaDev'),(04,04,'PythonDev'),(05,05,'PythonDev'),(07,06,'CyberExpert');
 select * from assigned_to;
 
-insert into employee values(01,'Arun',20,'1999-01-01',10000,10),(02,'Dinesh',21,'2000-02-01',20000,11),(03,'Karthikeya',22,'2001-03-01',30000,12),(04,'Arjun',23,'2002-04-01',40000,13),(05,'Karthikeya',24,'2003-05-01',50000,14),(06,'Dinesh',25,'2004-06-01',60000,15),(07,'Arun',26,'2005-07-01',70000,10);
+insert into employee values(01,'Arun',02,'1999-01-01',10000,10),(02,'Dinesh',21,'2000-02-01',20000,11),(03,'Karthikeya',02,'2001-03-01',30000,12),(04,'Arjun',02,'2002-04-01',40000,13),(05,'Karthikeya',01,'2003-05-01',50000,14),(06,'Dinesh',02,'2004-06-01',60000,15),(07,'Arun',01,'2005-07-01',70000,10);
 select * from employee;
 
 insert into dept values(10,'Blockchain','Bengaluru'),(11,'AIML','Bengaluru'),(12,'AppDev','Mysuru'),(13,'Cloud','Mysuru'),(14,'WebDev','Hyderabad'),(15,'Cybersecurity','Hyderabad');
@@ -61,6 +61,14 @@ where empno not in (select empno from incentives);
 select e.ename,e.empno,d.dept_no,ato.job_role,d.dloc,p.ploc
 from employee e,dept d,project p,assigned_to ato
 where ato.empno=e.empno and ato.pno=p.pno and d.dept_no=e.dept_no and d.dloc=p.ploc;
+
+select e.ename
+from employee e
+where e.ename in (select e2.mgr_no,count(e2.mgr_no) from employee e2 group by mgr_no);
+
+select e.ename
+from employee e
+where e.deptno=(select mgr_no,dept_no from employee group by mgr_no);
 
 select i.empno,max(i.incentive_amt)
 from incentives i,employee e
