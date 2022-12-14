@@ -66,10 +66,21 @@ select max(total),e1.ename
 from (select count(e.empno) as total,e.mgr_no from employee e group by mgr_no) as result,employee e1
 where e1.empno=result.mgr_no;
 
-select e1.ename,e1.empno
-from employee e1
-where sal>all(select avg(e2.sal) from employee e2 group by mgr_no);
+select m.ename from employee m
+where m.empno in
+(select mgr_no from employee)
+and m.sal>(select avg(n.sal) from employee n
+where n.mgr_no=m.empno);
+
+select ename
+from employee
+where mgr_no in(select distinct mgr_no from employee
+where empno in(select distinct mgr_no from employee where empno in(select distinct mgr_no from employee)));                                                                                                                                                                                                                                                             
 
 select i.empno,max(i.incentive_amt)
 from incentives i,employee e
 where incentive_amt!=(select max(incentive_amt) from incentives);
+
+select e2.ename,e2.empno
+from employee e1,employee e2
+where e1.empno=e2.mgr_no and e1.dept_no=e2.dept_no;
